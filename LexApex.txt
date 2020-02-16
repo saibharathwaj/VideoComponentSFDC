@@ -1,0 +1,7 @@
+public with sharing class LEXApex {
+
+    @AuraEnabled
+    public static List<ContentDocument> fetchContentDocs() {
+        return [Select Id, Title, FileType, CreatedBy.Name, ContentSize, PublishStatus, Description from ContentDocument LIMIT 100];
+    }
+}

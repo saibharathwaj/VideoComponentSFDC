@@ -1,0 +1,114 @@
+<aura:component access="global" 
+                controller="LEXApex"
+                implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:appHostable">
+    <!--<iframe width="200" 
+            height="120" 
+            src="https://www.youtube.com/embed/45JRuZOBIKk"/>-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="contentDocumentList" type="List"/>
+    <aura:attribute name="selectFlag" type="Boolean" default="false"/>
+    <aura:attribute name="selectedDocumentId" type="String"/>
+    <aura:attribute name="selectedCourseTitle" type="String"/>
+    <aura:attribute name="emailDetails" type="String" default="venkathsaibharath@gmail.com"/>
+    <lightning:overlayLibrary aura:id="overlayLib"/>
+    <div>
+        <div class="slds-page-header">
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                    <div class="slds-media">
+                        <div class="slds-media__figure">
+                            <span class="slds-icon_container slds-icon-standard-opportunity" title="opportunity">
+                                <lightning:icon iconName="action:user" size="small"/>
+                                <span class="slds-assistive-text">opportunity</span>
+                            </span>
+                        </div>
+                        <div class="slds-media__body">
+                            <div class="slds-page-header__name">
+                                <div class="slds-page-header__name-title">
+                                    <h1>
+                                        <span class="slds-page-header__title slds-truncate" title="Sai Bharathwaj">Sai Bharathwaj</span>
+                                    </h1>
+                                </div>
+                            </div>
+                            <p class="slds-page-header__name-meta">ECAS - Technology Lead</p>
+                        </div>
+                        <div class="slds-media__figure" style="float:right;">
+                            <span class="slds-icon_container slds-icon-standard-account" title="QA">
+                                <lightning:icon iconName="utility:listen" /> 
+                            </span>
+                            &nbsp;
+                            <span class="slds-icon_container slds-icon-standard-account" title="QA">
+                                <lightning:icon iconName="utility:questions_and_answers" />
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <br/>
+    <div>
+        <lightning:tabset variant="vertical">
+            <lightning:tab label="Training" iconName="utility:trailhead">
+                <div class="slds-grid slds-wrap">
+                    <aura:iteration items="{!v.contentDocumentList}" 
+                                    var="content"
+                                    indexVar="index">
+                        <div class="slds-col slds-size_1-of-3 slds-p-around_small">
+                            <lightning:card title="{!content.Title}" iconName="utility:knowledge_base">
+                                <p class="slds-p-horizontal_small">
+                                    <div class="slds-grid slds-gutters">
+                                        <div class="slds-col slds-size_1-of-2 " style="text-align: left;">
+                                            Title      : <a onclick="{!c.doSelectTitle}"
+                                                            data-Id="{!content.Id}"
+                                                            data-name="{!content.Title}">{!content.Title} </a> &nbsp;
+                                            <br/>
+                                            Description: {!content.Description} &nbsp;
+                                            <br/>
+                                            Content    : {!content.ContentSize} &nbsp;
+                                            <br/>
+                                        </div>
+                                    </div>
+                                </p>
+                                <aura:set attribute="actions">
+                                    <lightning:button name="{!content.Id}"
+                                                      label="Enroll"
+                                                      variant="brand"
+                                                      value="{!content.Title}"
+                                                      onclick="{!c.enrollSelection}"/>
+                                </aura:set>
+                                <aura:set attribute="footer">
+                                    <lightning:badge label="{!content.PublishStatus}"/>
+                                </aura:set>
+                            </lightning:card>
+                        </div>
+                    </aura:iteration>
+                </div>
+            </lightning:tab>
+            <lightning:tab label="Certification" iconName="standard:knowledge">
+                <iframe width="200" 
+                        height="120" 
+                        src="https://www.youtube.com/embed/45JRuZOBIKk"/> &nbsp;
+                <iframe width="200" 
+                        height="120" 
+                        src="https://www.youtube.com/embed/45JRuZOBIKk"/> &nbsp;
+            </lightning:tab>
+        </lightning:tabset>
+    </div>
+    <div>
+        <aura:if isTrue="{!v.selectFlag}">
+            <section onclick="{!c.closeModel}"
+                     role="dialog"
+                     aria-modal="true"
+                     class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__content slds-p-around_medium slds-text-align_center"
+                     style="background: transparent;">
+                    <div style="width: 50%; margin: 0 auto; text-align: left">
+                        <lightning:fileCard fileId="{!v.selectedDocumentId}"/>
+                    </div>
+                </div>
+            </section>
+        </aura:if>
+    </div>
+</aura:component>
